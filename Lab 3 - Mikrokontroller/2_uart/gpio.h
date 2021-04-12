@@ -4,6 +4,12 @@
 
 #define GPIO ((NRF_GPIO_REG*)0x50000000)
 
+#define TGT_RXD_PIN 25
+#define TGT_TXD_PIN 24
+
+#define BTN_A_PIN 17
+#define BTN_B_PIN 26
+
 typedef struct {
 	volatile uint32_t RESERVED0[321];
 	volatile uint32_t OUT;
@@ -16,5 +22,7 @@ typedef struct {
 	volatile uint32_t RESERVED1[120];
 	volatile uint32_t PIN_CNF[32];
 } NRF_GPIO_REG;
+
+
 
 #endif
