@@ -1,6 +1,9 @@
 #include <stdint.h>
 
-#define GPIO ((NRF_GPIO_REGS*)0x50000000)
+#define GPIO ((NRF_GPIO_REGS*) 0x50000000)
+
+#define BTN_A_PIN 17
+#define BTN_B_PIN 26
 
 typedef struct {
 	volatile uint32_t RESERVED0[321];
@@ -23,31 +26,36 @@ int main(){
 	}
 
 	// Configure buttons
-	GPIO->PIN_CNF[17] = 0;
-	GPIO->PIN_CNF[26] = 0;
+	GPIO->PIN_CNF[BTN_A_PIN] = 0;
+	GPIO->PIN_CNF[BTN_B_PIN] = 0;
 
 	int sleep = 0;
 	while(1){
 
 		/* Check if button B is pressed;
 		 * turn on LED matrix if it is. */
-
-		if(!(GPIO->IN & (1 << 26))){
-			for(int i = 4; i <= 12; i++){
-				GPIO->OUTCLR = (1 << i); 
-			}
-			for(int i = 13; i <= 15; i++){
-				GPIO->OUTSET = (1 << i);
-			}
-		}
+        if(!(GPIO->IN & (1 << BTN_B_PIN)) )
+        {
+            for(int i = 4; i <= 12; i++) {
+                GPIO->OUTCLR = (1 << i);
+            }
+            for(int i = 13; i <= 15; i++) {
+                GPIO->OUTSET = (1 << i);
+            }
+        }
 
 		/* Check if button A is pressed;
 		 * turn off LED matrix if it is. */
-		else if(!(GPIO->IN & (1 << 17))){
-			for(int i = 4; i <= 15; i++){
-				GPIO->OUTCLR = (1 << i); 
-			}
-		}
+
+        if(!(GPIO->IN & (1 << BTN_A_PIN)) )
+        {
+            for(int i = 4; i <= 12; i++) {
+               GPIO->OUTCLR = (1 << i);
+            }
+            for(int i = 13; i <= 15; i++) {
+                GPIO->OUTCLR = (1 << i);
+            }
+        }
 
 
 		sleep = 10000;
@@ -55,12 +63,3 @@ int main(){
 	}
 	return 0;
 }
-
-//YYY
-/*
-oppg 1.2 
-a) Pinne 13 til 15 brukes for å skru på lysene på matrisa.  pinne 17 og 26 brukes for knapp A og B. 
-Pinnene er lave når de trykkes.
-b) 0x50000000
-c) reserved1 skal være 120. 
-*/
