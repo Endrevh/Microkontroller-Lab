@@ -43,7 +43,6 @@ typedef struct {
     volatile uint32_t CONFIG;
 } NRF_UART_REG;
 
-
 void uart_init();
 void uart_send(char letter);
 char uart_read();
